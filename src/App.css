@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Jersey+25&display=swap");
+
+@import "tailwindcss";
+
+@layer base {
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+}
+
+main {
+  background-image: url("/offline.png");
+  background-size: cover;
+  background-repeat: no-repeat; /* Prevents image repetition if it doesn't fully cover */
+  background-position: center;
+  cursor: url("./assets/vicksyGa.cur"), auto;
+}
+
+.active {
+  background: white;
+  color: hsl(38 100% 57%);
+  border-radius: 8px;
+}
+
+.move-across {
+  animation: moveAcross 15s linear infinite;
+}
+
+@keyframes moveAcross {
+  from {
+    transform: translateX(100vw);
+  }
+  to {
+    transform: translateX(-100vw);
+  }
+}
+
+@theme {
+  --cursor-vicksyGa: url("./assets/vicksyGaCursor.cur"), pointer;
+}
+
+@theme {
+  --animate-pulsing: pulsing 4s ease-out infinite;
+
+  @keyframes pulsing {
+    100% {
+      transform: scale(2);
+      opacity: 1;
+    }
+  }
+}
+
+@layer components {
+  .live-ping {
+    position: relative;
+  }
+  .live-ping::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: rgba(220, 38, 38, 0.6);
+    z-index: -1;
+    animation: live-pulse 5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes live-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+}
+
+@theme {
+  --animate-wiggle: wiggle 2s ease-in-out;
+
+  @keyframes wiggle {
+    0% {
+      transform: rotate(0deg);
+    }
+    10% {
+      transform: rotate(14deg);
+    }
+    20% {
+      transform: rotate(-8deg);
+    }
+    30% {
+      transform: rotate(14deg);
+    }
+    40% {
+      transform: rotate(-4deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    60% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+/* Custom color palette */
+@theme {
+  --color-primary: hsl(38 100% 57%);
+
+  --color-bg-light: hsl(0 0% 10%);
+  --color-bg: hsl(0 0% 5%);
+  --color-bg-dark: hsl(0 0% 0%);
+
+  --color-text: hsl(0 0% 95%);
+  --color-text-muted: hsl(0 0% 75%);
+}
+
+/* Custom font */
+
+@font-face {
+  font-family: Jersay;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@theme {
+  --font-pixel: "Jersey 25", sans-serif;
+}
