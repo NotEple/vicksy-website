@@ -18,6 +18,10 @@ main {
   cursor: url("./assets/vicksyGa.cur"), auto;
 }
 
+nav {
+  cursor: url("./assets/vicksyGa.cur"), auto;
+}
+
 .active {
   background: white;
   color: hsl(38 100% 57%);
