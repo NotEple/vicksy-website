@@ -71,10 +71,11 @@ setInterval(async () => {
 // Start server
 // ------------------------------
 
-httpServer.listen(process.env.PORT, () => {
+const PORT = process.env.PORT || 3001;
+httpServer.listen(PORT, () => {
   ws.on("connection", (socket) => {
     console.log("New WebSocket connection");
   });
 
-  console.log("Server listening on http://localhost:3001");
+  console.log(`Server listening on port ${PORT}`);
 });

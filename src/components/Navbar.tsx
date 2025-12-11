@@ -8,7 +8,9 @@ export default function Navbar() {
   const [isLive, setIsLive] = useState<boolean>(false);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3001");
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const host = window.location.host;
+    const ws = new WebSocket(`${protocol}://${host}/`);
 
     ws.onopen = () => {
       console.log("Connected to WebSocket server");
