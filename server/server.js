@@ -1,3 +1,4 @@
+// server.js
 import path from "path";
 import dotenv from "dotenv";
 import express from "express";
@@ -6,13 +7,9 @@ import { createServer } from "http";
 import { WebSocketServer } from "ws";
 import { ApiClient } from "@twurple/api";
 import { AppTokenAuthProvider } from "@twurple/auth";
-import { createServer as createViteServer } from "vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-dotenv.config({
-  path: path.resolve(__dirname, "../.env"),
-});
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const clientId = process.env.TWITCH_CLIENT_ID;
 const clientSecret = process.env.TWITCH_CLIENT_SECRET;
@@ -24,58 +21,49 @@ const app = express();
 const httpServer = createServer(app);
 const ws = new WebSocketServer({ server: httpServer });
 
-// ------------------------------
-// DEV vs PROD handling for Vite
-// ------------------------------
-
+// Serve static frontend in production
 if (process.env.NODE_ENV === "production") {
   const dist = path.resolve(__dirname, "../dist");
   app.use(express.static(dist));
-
-  // SPA fallback
-  app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(dist, "index.html"));
-  });
-} else {
-  // Use Vite's dev server with middleware
-  const vite = await createViteServer({
-    server: { middlewareMode: true },
-    appType: "custom",
-  });
-
-  app.use(vite.middlewares);
-
-  console.log("Running in DEVELOPMENT mode");
+  app.get(/.*/, (req, res) => res.sendFile(path.join(dist, "index.html")));
 }
 
-// ------------------------------
-// Twitch polling + WebSockets
-// ------------------------------
+let lastStatus = { live: false };
 
-setInterval(async () => {
+// Poll Twitch and broadcast to all clients
+async function checkTwitchStatus() {
   try {
     const stream = await apiClient.streams.getStreamByUserName("Vicksy");
     const live = !!stream;
 
-    ws.clients.forEach((client) => {
-      if (client.readyState === client.OPEN) {
-        client.send(JSON.stringify({ live }));
-      }
-    });
+    // Only broadcast if status changed
+    if (lastStatus.live !== live) {
+      lastStatus = { live };
+      ws.clients.forEach((client) => {
+        if (client.readyState === client.OPEN) {
+          client.send(JSON.stringify(lastStatus));
+        }
+      });
+      console.log("Twitch status updated:", live ? "LIVE" : "OFFLINE");
+    }
   } catch (e) {
     console.error("Error checking Twitch status:", e);
   }
-}, 30000);
+}
 
-// ------------------------------
-// Start server
-// ------------------------------
+// Run once immediately, then every 30s
+checkTwitchStatus();
+setInterval(checkTwitchStatus, 30000);
 
+// Handle new WebSocket connections
+ws.on("connection", (socket) => {
+  console.log("New WebSocket connection");
+  // Immediately send last known status
+  socket.send(JSON.stringify(lastStatus));
+});
+
+// Start HTTP server
 const PORT = process.env.PORT || 3001;
 httpServer.listen(PORT, () => {
-  ws.on("connection", (socket) => {
-    console.log("New WebSocket connection");
-  });
-
   console.log(`Server listening on port ${PORT}`);
 });
