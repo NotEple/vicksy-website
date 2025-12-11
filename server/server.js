@@ -17,8 +17,6 @@ dotenv.config({
 const clientId = process.env.TWITCH_CLIENT_ID;
 const clientSecret = process.env.TWITCH_CLIENT_SECRET;
 
-console.log(clientId, clientSecret);
-
 const authProvider = new AppTokenAuthProvider(clientId, clientSecret);
 const apiClient = new ApiClient({ authProvider });
 
@@ -31,17 +29,13 @@ const ws = new WebSocketServer({ server: httpServer });
 // ------------------------------
 
 if (process.env.NODE_ENV === "production") {
-  const distPath = path.resolve(__dirname, "../dist");
-
-  // Serve static built client
-  app.use(express.static(distPath));
+  const dist = path.resolve(__dirname, "../dist");
+  app.use(express.static(dist));
 
   // SPA fallback
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(distPath, "index.html"));
+  app.get(/.*/, (req, res) => {
+    res.sendFile(path.join(dist, "index.html"));
   });
-
-  console.log("Running in PRODUCTION mode");
 } else {
   // Use Vite's dev server with middleware
   const vite = await createViteServer({
