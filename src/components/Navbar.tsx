@@ -1,36 +1,11 @@
-import { useEffect, useState } from "react";
-import vicksyW from "../assets/vicksyW.png";
-import { twm } from "../utils/twm";
 import { Link, NavLink } from "react-router-dom";
-import vicksyLogo from "../assets/vicksyLogo.png";
+import vicksyW from "@/assets/vicksyW.png";
+import { twm } from "@/utils/twm";
+import vicksyLogo from "@/assets/vicksyLogo.png";
+import { useLive } from "@/hooks/useLive";
 
 export default function Navbar() {
-  const [isLive, setIsLive] = useState<boolean>(false);
-
-  useEffect(() => {
-    const host =
-      import.meta.env.MODE === "development"
-        ? "localhost:3001"
-        : window.location.host;
-
-    console.log(host);
-
-    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const ws = new WebSocket(`${protocol}://${host}/`);
-
-    console.log(ws);
-
-    ws.onopen = () => console.log("Connected to WebSocket server");
-    ws.onmessage = (event) => {
-      console.log("Received status:", event.data);
-      const data = JSON.parse(event.data);
-      setIsLive(data.live);
-    };
-    ws.onerror = (err) => console.error("WebSocket error:", err);
-    ws.onclose = () => console.log("WebSocket closed");
-
-    return () => ws.close();
-  }, []);
+  const { isLive } = useLive();
 
   return (
     <nav className="h-20 bg-primary flex justify-center relative shadow-2xl">
@@ -49,6 +24,7 @@ export default function Navbar() {
             title="twitch.tv/vicksy"
             href="https://twitch.tv/vicksy"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <img
               src={vicksyW}
@@ -58,7 +34,9 @@ export default function Navbar() {
             <div
               className={twm(
                 "text-base w-20 text-center tracking-wider text-white absolute top-23 left-2/4 rounded-2xl font-pixel -translate-x-1/2 hover:scale-105 hover:ease-in hover:duration-200 hover:transition-all",
-                isLive ? "bg-red-600 live-ping" : "bg-neutral-500 text-sm p-0.5"
+                isLive
+                  ? "bg-red-600 live-ping"
+                  : "bg-neutral-500 text-sm p-0.5",
               )}
             >
               <span>{isLive ? "LIVE" : "OFFLINE"}</span>
@@ -67,14 +45,15 @@ export default function Navbar() {
         </div>
 
         <ul className="flex flex-row gap-8 items-center font-pixel text-3xl text-white">
-          <Link
+          <a
             title="Merch"
-            to="https://vicksy-shop.fourthwall.com/"
+            href="https://vicksy-shop.fourthwall.com/"
             target="_blank"
+            rel="noopener noreferrer"
             className="px-2 hover:outline-2 rounded-md"
           >
             Merch
-          </Link>
+          </a>
           <NavLink
             title="Socials"
             to="/socials"
