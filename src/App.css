@@ -13,18 +13,13 @@
 main {
   background-image: url("/offline.png");
   background-size: cover;
-  background-repeat: no-repeat; /* Prevents image repetition if it doesn't fully cover */
+  background-repeat: no-repeat;
   background-position: center;
-  cursor: url("./assets/vicksyGa.cur"), auto;
-}
-
-nav {
-  cursor: url("./assets/vicksyGa.cur"), auto;
 }
 
 .active {
   background: white;
-  color: hsl(38 100% 57%);
+  color: #ffaf24;
   border-radius: 8px;
 }
 
@@ -39,10 +34,6 @@ nav {
   to {
     transform: translateX(-100vw);
   }
-}
-
-@theme {
-  --cursor-vicksyGa: url("./assets/vicksyGaCursor.cur"), pointer;
 }
 
 @theme {

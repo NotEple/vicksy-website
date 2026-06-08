@@ -38,7 +38,7 @@ export default function Navbar() {
         <Link
           title="Home"
           to="/"
-          className="font-pixel text-6xl items-center flex text-white hover:cursor-vicksyGa"
+          className="font-pixel text-6xl items-center flex text-white"
         >
           {/* Vicksy */}
           <img src={vicksyLogo} className="h-3/4" />
@@ -52,12 +52,12 @@ export default function Navbar() {
           >
             <img
               src={vicksyW}
-              className="rounded-full relative hover:animate-wiggle hover:cursor-vicksyGa"
+              className="rounded-full relative hover:animate-wiggle"
               alt="Profile picture"
             />
             <div
               className={twm(
-                "text-base w-20 text-center tracking-wider text-white absolute top-23 left-2/4 rounded-2xl font-pixel -translate-x-1/2 hover:scale-105 hover:ease-in hover:duration-200 hover:transition-all hover:cursor-vicksyGa",
+                "text-base w-20 text-center tracking-wider text-white absolute top-23 left-2/4 rounded-2xl font-pixel -translate-x-1/2 hover:scale-105 hover:ease-in hover:duration-200 hover:transition-all",
                 isLive ? "bg-red-600 live-ping" : "bg-neutral-500 text-sm p-0.5"
               )}
             >
@@ -71,23 +71,16 @@ export default function Navbar() {
             title="Merch"
             to="https://vicksy-shop.fourthwall.com/"
             target="_blank"
-            className="px-2 hover:cursor-vicksyGa hover:outline-2 rounded-md"
+            className="px-2 hover:outline-2 rounded-md"
           >
             Merch
           </Link>
           <NavLink
             title="Socials"
             to="/socials"
-            className="px-2 hover:cursor-vicksyGa hover:outline-2 rounded-md"
+            className="px-2 hover:outline-2 rounded-md"
           >
             Socials
-          </NavLink>
-          <NavLink
-            title="Dashboard"
-            to="/dashboard"
-            className="px-2 hover:cursor-vicksyGa hover:outline-2 rounded-md"
-          >
-            Dashboard
           </NavLink>
         </ul>
       </div>

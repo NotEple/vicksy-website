@@ -2,14 +2,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-// import Dashboard from "./pages/Dashboard";
-// import Socials from "./pages/Socials";
-// import Error from "./pages/Error";
-// import Landing from "./pages/Landing";
 import TitleController from "./components/TitleController";
 import vicksyPeek from "./assets/vicksyPeek.png";
 import vicksyFastRoll from "./assets/vicksyFastRoll.gif";
+// import Dashboard from "./pages/Dashboard";
+import Error from "./pages/Error";
 import Development from "./pages/Development";
+import Socials from "./pages/Socials";
 
 function App() {
   return (
@@ -20,10 +19,8 @@ function App() {
         <main className="h-full relative overflow-hidden items-center flex justify-center w-full">
           <Routes>
             <Route path="/" element={<Development />} />
-            {/* <Route path="/merch" element={<Merch />} /> */}
-            <Route path="/socials" element={<Development />} />
-            <Route path="/dashboard" element={<Development />} />
-            <Route path="*" element={<Development />} />
+            <Route path="/socials" element={<Socials />} />
+            <Route path="*" element={<Error />} />
           </Routes>
 
           <img src={vicksyPeek} className="absolute top-1/2 -left-6" />
