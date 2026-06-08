@@ -2,6 +2,7 @@ import { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useLive } from "@/hooks/useLive";
 import vicksyWLIVE from "/vicksyWLIVE.png";
+import vicksyW from "/vicksyW.png";
 
 export default function TitleController() {
   const location = useLocation();
@@ -17,7 +18,11 @@ export default function TitleController() {
 
     const favicon = document.getElementById("favicon") as HTMLLinkElement;
 
-    if (isLive) favicon.href = vicksyWLIVE;
+    if (isLive) {
+      favicon.href = vicksyWLIVE;
+    } else {
+      favicon.href = vicksyW;
+    }
 
     const route = routes.find((r) => r.path === location.pathname);
     if (route?.title)
